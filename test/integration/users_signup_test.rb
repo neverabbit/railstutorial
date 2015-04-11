@@ -11,7 +11,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post users_path, user: { name: "", email: "user@invalid", password: "foo", password_confirmation: "bar" }
     end
     assert_template 'users/new'
-  end
+    assert_select '#error_explanation'
+    assert_select '#error_explanation .alert-danger'
+    assert_select '#error_explanation ul' do
+      assert_select 'li', 4
+    end
+  end    
   
   test "valid signup information" do
     get signup_path
@@ -22,5 +27,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post_via_redirect users_path, user: { name: name, email: email, password: password, password_confirmation: password }
     end
     assert_template 'users/show'
+    assert_equal flash[:success], "Welcome to the Sample App!"
   end 
 end
