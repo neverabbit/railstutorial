@@ -5,6 +5,8 @@
 			<h1> 
 				<%= gravatar_for @user %>
 				<%= @user.name %>
+				<%= cookies[:user_id] %>
+				<%= cookies[:remember_token] %>
 			</h1>
 		</section>
 	</aside>
