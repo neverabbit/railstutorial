@@ -16,6 +16,12 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'bcrypt'
 
+gem 'faker'
+
+gem 'will_paginate'
+
+gem 'bootstrap-will_paginate'
+
 #Bootstrap
 gem 'bootstrap-sass'
 
@@ -55,4 +61,6 @@ group :test do
   gem 'ruby-prof'
   gem 'guard'
 end
+
+
 
