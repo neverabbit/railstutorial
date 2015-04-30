@@ -60,4 +60,11 @@ class UsersControllerTest < ActionController::TestCase
     patch :update, id: @other_user, user: { password: 'namename', password_confirmation: 'namename', admin: true }
     assert_not @other_user.reload.admin?
   end
+  
+  test "should redirect to user when logged in user sign ups" do
+    log_in_as(@user)
+    get :new
+    assert_redirected_to @user
+  end
+  
 end

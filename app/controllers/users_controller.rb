@@ -13,16 +13,24 @@ class UsersController < ApplicationController
   end
   
   def new
-    @user = User.new
+    if logged_in?
+      redirect_to current_user
+    else
+      @user = User.new
+    end
   end
   
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+      @user.send_activation_email 
+      # log_in @user
+      # flash[:success] = "Welcome to the Sample App!"
+      flash[:info] = "please check your email to activate your account."
+      # redirect_to @user
+      redirect_to root_url
     else
+      # require "../../test/integration/users_signup_test"
       render 'new'
     end
   end
