@@ -32,4 +32,14 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_select 'a', text: 'delete', count: 0
   end
+  
+  
+  test "should show activated users when calling 'users'" do
+    log_in_as(@admin)
+    @non_admin.toggle!(:activated)
+    get users_path
+    assert_select 'a[href=?]', user_path(@non_admin), { count: 0 }, text: 'delete', method: :delete 
+    get user_path(@non_admin)
+    assert_redirected_to root_url
+  end
 end
