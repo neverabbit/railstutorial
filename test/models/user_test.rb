@@ -79,4 +79,34 @@ class UserTest < ActiveSupport::TestCase
       @user.destroy
     end
   end
+  
+  test "should follow and unfollow a user" do
+    test = users(:test)
+    name = users(:name)
+    assert_not test.following?(name)
+    test.follow(name)
+    assert test.following?(name)
+    assert name.followers.include?(test)
+    test.unfollow(name)
+    assert_not test.following?(name)
+    assert_not name.followers.include?(test)
+  end
+  
+  test "feed should have the right posts" do
+    test = users(:test)
+    name = users(:name)
+    lana = users(:lana)
+    # 关注的用户发布的微博
+    lana.microposts.each do |post_following|
+      assert test.feed.include?(post_following)
+    end
+    # 自己的微博
+    test.microposts.each do |post_self|
+      assert test.feed.include?(post_self)
+    end
+    # 未关注用户的微博
+    name.microposts.each do |post_unfollowed|
+      assert_not test.feed.include?(post_unfollowed)
+    end
+  end
 end
